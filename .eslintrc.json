@@ -4,7 +4,6 @@
     "es2021": true
   },
   "extends": [
-    "plugin:prettier/recommended",
     "airbnb",
     "eslint:recommended",
     "plugin:react/recommended",
@@ -24,7 +23,8 @@
     "react-hooks"
   ],
   "rules": {
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".tsx"] }]
   },
   "settings": {
     "import/resolver": {
