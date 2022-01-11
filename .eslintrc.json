@@ -25,7 +25,8 @@
   "rules": {
     "import/no-unresolved": "error",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".tsx"] }],
-    "import/prefer-default-export": false
+    "import/extensions": 0,
+    "import/prefer-default-export": 0 
   },
   "settings": {
     "import/resolver": {
