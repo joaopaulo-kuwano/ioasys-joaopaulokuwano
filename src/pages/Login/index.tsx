@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import backgroundImage from '../../assets/bg-image.png';
-import logoImage from '../../assets/logo.png';
-import { Input } from '../../components/input';
-import { InputWithSubmit } from '../../components/input-with-submit';
 import { PopOver } from '../../components/popover';
+import { SDK } from '../../sdk';
+import { LoginForm } from './form';
+
+export interface ILoginForm {
+  email: string
+  password: string
+}
 
 export function LoginPage() {
-  const [form, setForm] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
   const dispatchError = (err: string, duration = 6000) => {
@@ -16,41 +19,31 @@ export function LoginPage() {
     setTimeout(() => setError(''), duration);
   };
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!form.email || !form.password) {
+  const submit = async (e: ILoginForm) => {
+    if (!e.email || !e.password) {
       dispatchError('Preencha email e senha');
+      return;
     }
+
+    const sdk = new SDK();
+    const api = await sdk.signIn(e);
+
+    if (!api.success) {
+      dispatchError('Email e/ou senha incorretos');
+      return;
+    }
+
+    localStorage.setItem('authorization', api.auth_token);
+    localStorage.setItem('user', JSON.stringify(api.data));
   };
 
   return (
     // eslint-disable-next-line no-use-before-define
     <Container>
       <div className="center-box">
-        <form onSubmit={(e) => submit(e)}>
-          <div className="header">
-            <img alt="logo ioasys" src={logoImage} />
-            <span className="subtitle">Books</span>
-          </div>
-          <Input
-            name="email"
-            value={form.email}
-            onChange={(e) => setForm({ ...form, email: e.target.value })}
-            label=""
-            type="email"
-          />
-          <div className="form-group">
-            <InputWithSubmit
-              name="senha"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              label=""
-              type="password"
-            />
-          </div>
-          {error && (<PopOver message={error} />)}
-          {!error && (<div style={{ height: 30 }} />)}
-        </form>
+        <LoginForm submit={submit} />
+        {error && (<PopOver message={error} />)}
+        {!error && (<div style={{ height: 50 }} />)}
       </div>
     </Container>
   );
@@ -76,8 +69,10 @@ const Container = styled.div`
   .center-box {
     grid-column: 1/2;
     
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .center-box > form {
