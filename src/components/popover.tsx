@@ -24,6 +24,7 @@ const Container = styled.div`
   border-radius: 30px;
   animation-name: opacityFrame;
   animation-duration: 3s;
+  margin-top: 20px;
 
   .arrow_box {
     position: relative;
