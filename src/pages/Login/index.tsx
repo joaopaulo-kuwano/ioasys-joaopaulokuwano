@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import backgroundImage from '../../assets/bg-image.png';
@@ -12,6 +13,8 @@ export interface ILoginForm {
 }
 
 export function LoginPage() {
+  const navigate = useNavigate();
+
   const [error, setError] = useState('');
 
   const dispatchError = (err: string, duration = 6000) => {
@@ -34,7 +37,9 @@ export function LoginPage() {
     }
 
     localStorage.setItem('authorization', api.auth_token);
+    localStorage.setItem('refresh-token', api.refresh_token);
     localStorage.setItem('user', JSON.stringify(api.data));
+    navigate('/home');
   };
 
   return (
@@ -73,26 +78,6 @@ const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
-
-  .center-box > form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 300px;
-  }
-
-  .center-box > form > .header {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .center-box > form > .header > .subtitle {
-    font-size: 18px;
-    color: white;
-    font-weight: 100;
   }
 
   @keyframes opacityFrame {
