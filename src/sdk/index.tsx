@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
+import { IBook, MockBook } from '../models/Books';
 import { IUser } from '../models/User';
 import { ILoginForm } from '../pages/Login';
 import {
@@ -85,6 +86,26 @@ export class SDK {
       return MockBooksResponse;
     } catch (err) {
       return MockBooksResponse;
+    }
+  }
+
+  async getBook(authorization: string, id: string): Promise<IBook> {
+    try {
+      const url = `${this.baseUrl}/books/${id}`;
+      const config: AxiosRequestConfig = {
+        url,
+        method: 'GET',
+        headers: {
+          authorization: `Bearer ${authorization}`,
+        },
+      };
+
+      const api = await axios(config);
+      if (api.status === 200) return api.data;
+
+      return MockBook;
+    } catch (err) {
+      return MockBook;
     }
   }
 }
