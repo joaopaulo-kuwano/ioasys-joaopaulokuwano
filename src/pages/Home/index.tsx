@@ -1,7 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { SDK } from '../../sdk';
+import { Header } from './header';
+import { Storage } from '../../libs/storage';
+import { IBook } from '../../models/Books';
+import { Grid } from './Grid';
+
+/**
+ *
+ * @returns Verifica se tem token de login salvo
+ * E o atualiza pela api /auth/refresh-token
+ * Se nao tiver ou nao puder ser atualizado,
+ * redireciona para login
+ */
+async function updateAuthAndRefreshToken(): Promise<boolean> {
+  const authorization = Storage.getItem('authorization');
+  const token = Storage.getItem('refresh-token');
+
+  if (!authorization) return false;
+  if (!token) return false;
+
+  const sdk = new SDK();
+  const api = await sdk.refreshToken(token, authorization);
+  if (!api.success) return false;
+
+  Storage.setItem('authorization', api.auth_token);
+  Storage.setItem('refresh-token', api.refresh_token);
+  return true;
+}
 
 /**
  *
@@ -13,38 +40,33 @@ import { SDK } from '../../sdk';
 export function HomePage() {
   const navigate = useNavigate();
 
-  const refreshTokenOrRedirect = async () => {
-    const authorization = localStorage.getItem('authorization');
-    // eslint-disable-next-line camelcase
-    const refresh_token = localStorage.getItem('refresh-token');
+  const [books, setBooks] = useState<IBook[]>([]);
 
-    if (!authorization) return navigate('/');
-    // eslint-disable-next-line camelcase
-    if (!refresh_token) return navigate('/');
+  const validateLoginAndGetBooks = async () => {
+    const hasValidToken = await updateAuthAndRefreshToken();
+    if (!hasValidToken) navigate('/');
 
     const sdk = new SDK();
-    const api = await sdk.refreshToken(refresh_token, authorization);
-    if (!api.success) return navigate('/');
-
-    localStorage.setItem('authorization', api.auth_token);
-    localStorage.setItem('refresh-token', api.refresh_token);
-    return null;
+    const api = await sdk.getBooks(Storage.getItem('authorization'), 1);
+    setBooks(api.data);
   };
 
   useEffect(() => {
-    refreshTokenOrRedirect();
+    validateLoginAndGetBooks();
   }, []);
 
   return (
     // eslint-disable-next-line no-use-before-define
     <Container>
-      <span>BOOKS ROUTE</span>
+      <Header />
+      <Grid books={books} />
     </Container>
   );
 }
 
 const Container = styled.div`
 
-
+  background-color: #eee;
+  overflow-y: scroll;
 
 `;
