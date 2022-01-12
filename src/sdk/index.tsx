@@ -1,6 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { IUser, MockUser } from '../models/User';
+import { IUser } from '../models/User';
 import { ILoginForm } from '../pages/Login';
+import {
+  IBooksResponse, ISigninResponse, MockBooksResponse, MockSigninResponse,
+} from './interfaces';
 
 export class SDK {
   baseUrl = '';
@@ -9,7 +12,7 @@ export class SDK {
     this.baseUrl = _baseUrl || 'https://books.ioasys.com.br/api/v1';
   }
 
-  async signIn(data: ILoginForm) {
+  async signIn(data: ILoginForm): Promise<ISigninResponse> {
     try {
       const url = `${this.baseUrl}/auth/sign-in`;
       const config: AxiosRequestConfig = {
@@ -28,19 +31,9 @@ export class SDK {
         };
       }
 
-      return {
-        success: false,
-        data: MockUser,
-        auth_token: '',
-        refresh_token: '',
-      };
+      return MockSigninResponse;
     } catch (err) {
-      return {
-        success: false,
-        data: MockUser,
-        auth_token: '',
-        refresh_token: '',
-      };
+      return MockSigninResponse;
     }
   }
 
@@ -75,7 +68,23 @@ export class SDK {
     }
   }
 
-  async getBooks() {
-    const url = `${this.baseUrl}/books`;
+  async getBooks(authorization: string, page: number): Promise<IBooksResponse> {
+    try {
+      const url = `${this.baseUrl}/books?page=${page}&amount=50`;
+      const config: AxiosRequestConfig = {
+        url,
+        method: 'GET',
+        headers: {
+          authorization: `Bearer ${authorization}`,
+        },
+      };
+
+      const api = await axios(config);
+      if (api.status === 200) return api.data;
+
+      return MockBooksResponse;
+    } catch (err) {
+      return MockBooksResponse;
+    }
   }
 }
