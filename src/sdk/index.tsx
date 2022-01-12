@@ -24,17 +24,55 @@ export class SDK {
           success: true,
           data: api.data as IUser,
           auth_token: api.headers.authorization,
+          refresh_token: api.headers['refresh-token'],
         };
       }
 
-      return { success: false, data: MockUser, auth_token: '' };
+      return {
+        success: false,
+        data: MockUser,
+        auth_token: '',
+        refresh_token: '',
+      };
     } catch (err) {
-      return { success: false, data: MockUser, auth_token: '' };
+      return {
+        success: false,
+        data: MockUser,
+        auth_token: '',
+        refresh_token: '',
+      };
     }
   }
 
-  async refreshToken() {
-    const url = `${this.baseUrl}/auth/refresh-token`;
+  // eslint-disable-next-line camelcase
+  async refreshToken(refresh_token: string, authorization: string) {
+    try {
+      const url = `${this.baseUrl}/auth/refresh-token`;
+      const config: AxiosRequestConfig = {
+        url,
+        data: {
+          // eslint-disable-next-line camelcase
+          refreshToken: refresh_token,
+        },
+        headers: {
+          authorization: `Bearer ${authorization}`,
+        },
+        method: 'POST',
+      };
+
+      const api = await axios(config);
+      if (api.status === 204) {
+        return {
+          success: true,
+          auth_token: api.headers.authorization,
+          refresh_token: api.headers['refresh-token'],
+        };
+      }
+
+      return { success: false, auth_token: '', refresh_token: '' };
+    } catch (err) {
+      return { success: false, auth_token: '', refresh_token: '' };
+    }
   }
 
   async getBooks() {
