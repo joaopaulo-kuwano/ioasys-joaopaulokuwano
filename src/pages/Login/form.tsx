@@ -32,15 +32,13 @@ export function LoginForm({ submit }: Props) {
           label=""
           type="email"
         />
-        <div className="form-group">
-          <InputWithSubmit
-            name="senha"
-            value={form.password}
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            label=""
-            type="password"
-          />
-        </div>
+        <InputWithSubmit
+          name="password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          label=""
+          type="password"
+        />
       </form>
     </Container>
   );
