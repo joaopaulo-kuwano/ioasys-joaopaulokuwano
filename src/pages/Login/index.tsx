@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import backgroundImage from '../../assets/bg-image.png';
 import { PopOver } from '../../components/popover';
+import { Storage } from '../../libs/storage';
 import { SDK } from '../../sdk';
 import { LoginForm } from './form';
 
@@ -36,9 +37,9 @@ export function LoginPage() {
       return;
     }
 
-    localStorage.setItem('authorization', api.auth_token);
-    localStorage.setItem('refresh-token', api.refresh_token);
-    localStorage.setItem('user', JSON.stringify(api.data));
+    Storage.setItem('authorization', api.auth_token);
+    Storage.setItem('refresh-token', api.refresh_token);
+    Storage.setItem('user', JSON.stringify(api.data));
     navigate('/home');
   };
 
