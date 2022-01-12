@@ -4,6 +4,7 @@ import { IBook } from '../../models/Books';
 
 interface Props {
   book: IBook
+  openBookDetails: (e: IBook) => void
 }
 
 const fallbackImg = 'https://d2drtqy2ezsot0.cloudfront.net/Book-7.jpg';
@@ -13,14 +14,14 @@ const fallbackImg = 'https://d2drtqy2ezsot0.cloudfront.net/Book-7.jpg';
  * @param param0 book: IBook
  * @returns Card da lista de livros e handler para visão detalhada
  */
-export function CardBook({ book }: Props) {
+export function CardBook({ book, openBookDetails }: Props) {
   const pageCount = `${book.pageCount} páginas`;
   const publisher = `Editora ${book.publisher}`;
   const published = `Publicado em ${book.published}`;
 
   return (
     // eslint-disable-next-line no-use-before-define
-    <Container>
+    <Container onClick={() => openBookDetails(book)}>
       <div className="left">
         <img alt="capa do livro" src={book.imageUrl || fallbackImg} />
       </div>
