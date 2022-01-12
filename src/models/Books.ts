@@ -12,3 +12,18 @@ export interface IBook {
   published: number
   id: string
 }
+
+export const MockBook: IBook = {
+  authors: [],
+  title: '',
+  description: '',
+  pageCount: 0,
+  category: '',
+  imageUrl: '',
+  language: '',
+  isbn10: '',
+  isbn13: '',
+  publisher: '',
+  published: 0,
+  id: '',
+};
