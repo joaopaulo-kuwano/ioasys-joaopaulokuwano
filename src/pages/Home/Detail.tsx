@@ -2,10 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
+import { BookDetail } from '../../components/book-detail';
 import { Storage } from '../../libs/storage';
 import { IBook, MockBook } from '../../models/Books';
 import { SDK } from '../../sdk';
-import { BookDetail } from './BookDetail';
 
 const customStyles = {
   content: {

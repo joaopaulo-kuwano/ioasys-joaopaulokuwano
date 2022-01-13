@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { CardBook } from '../../components/book';
 import { IBook } from '../../models/Books';
-import { CardBook } from './Book';
 import { Detail } from './Detail';
 
 interface Props {

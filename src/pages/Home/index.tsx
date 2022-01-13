@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { SDK } from '../../sdk';
-import { Header } from './header';
 import { Storage } from '../../libs/storage';
 import { IBook } from '../../models/Books';
 import { Grid } from './Grid';
-import { Pagination } from './Pagination';
+import { Pagination } from '../../components/pagination';
+import { Header } from '../../components/HomeHeader';
 
 /**
  *
