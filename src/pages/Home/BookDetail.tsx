@@ -76,8 +76,18 @@ const Container = styled.div`
   gap: 2rem;
   justify-content: center;
 
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 1rem;
+
+  ::-webkit-scrollbar { display: none };
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  
   @media screen and (max-width: 768px) {
     flex-direction: column;
+    padding-top: 200px;
+    overflow-y: scroll;
   }
 
   .left {
@@ -99,9 +109,13 @@ const Container = styled.div`
   .right > .top {
     display: flex;
     flex-direction: column;
+    padding: 1rem 0;
   }
 
-  .right > .center { };
+  .right > .center {
+    padding: 1rem 0;
+  };
+
   .right > .center > .row {
     display: flex;
     flex-direction: row;
@@ -111,6 +125,7 @@ const Container = styled.div`
   .right > .bottom {
     display: flex;
     flex-direction: column;
+    padding: 1rem 0;
   }
 
   .title {
