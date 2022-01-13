@@ -43,11 +43,13 @@ export function HomePage() {
 
   const [books, setBooks] = useState<IBook[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
   const getBooks = async () => {
     const sdk = new SDK();
     const api = await sdk.getBooks(Storage.getItem('authorization'), page);
     setBooks(api.data);
+    setTotalPages(api.totalPages);
   };
 
   const validateLoginAndGetBooks = async () => {
@@ -73,7 +75,7 @@ export function HomePage() {
     <Container>
       <Header />
       <Grid books={books} />
-      <Pagination page={page} max={10} setPage={setPage} />
+      <Pagination page={page} max={totalPages} setPage={setPage} />
     </Container>
   );
 }
