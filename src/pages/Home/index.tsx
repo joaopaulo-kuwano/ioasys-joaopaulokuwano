@@ -44,15 +44,19 @@ export function HomePage() {
   const [books, setBooks] = useState<IBook[]>([]);
   const [page, setPage] = useState<number>(1);
 
-  const validateLoginAndGetBooks = async () => {
-    const hasValidToken = await updateAuthAndRefreshToken();
-    if (!hasValidToken) navigate('/');
-
+  const getBooks = async () => {
     const sdk = new SDK();
     const api = await sdk.getBooks(Storage.getItem('authorization'), page);
     setBooks(api.data);
   };
 
+  const validateLoginAndGetBooks = async () => {
+    const hasValidToken = await updateAuthAndRefreshToken();
+    if (!hasValidToken) navigate('/');
+    getBooks();
+  };
+
+  // valida login e atualiza o token a cada 20 minutos
   useEffect(() => {
     validateLoginAndGetBooks();
 
@@ -60,6 +64,9 @@ export function HomePage() {
       validateLoginAndGetBooks();
     }, 20 * 60 * 1000);
   }, []);
+
+  // atualiza a lista de livros sempre que mudar a pagina
+  useEffect(() => { getBooks(); }, [page]);
 
   return (
     // eslint-disable-next-line no-use-before-define
@@ -74,6 +81,7 @@ export function HomePage() {
 const Container = styled.div`
 
   background-color: #eee;
+  // especifica scroll para nao perder background color
   overflow-y: scroll;
 
 `;
