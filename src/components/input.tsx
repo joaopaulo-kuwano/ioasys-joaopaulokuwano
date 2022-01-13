@@ -21,7 +21,13 @@ export function Input({
     // eslint-disable-next-line no-use-before-define
     <Container>
       <label htmlFor={name}>{label}</label>
-      <input name={name} type={type} value={value} onChange={(e) => onChange(e)} />
+      <input
+        name={name}
+        type={type}
+        value={value}
+        onChange={(e) => onChange(e)}
+        aria-label={name}
+      />
     </Container>
   );
 }

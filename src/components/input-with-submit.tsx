@@ -21,8 +21,15 @@ export function InputWithSubmit({
     // eslint-disable-next-line no-use-before-define
     <Container>
       <label htmlFor={name}>{label}</label>
-      <input name={name} value={value} onChange={onChange} type={type} className="input-conteudo" />
-      <input type="submit" value="Entrar" className="input-submit" />
+      <input
+        name={name}
+        value={value}
+        onChange={onChange}
+        type={type}
+        className="input-conteudo"
+        aria-label={name}
+      />
+      <input type="submit" value="Entrar" className="input-submit" aria-label="input-submit" />
     </Container>
   );
 }
