@@ -8,4 +8,8 @@ export class Storage {
   static setItem(key: StorageItems, data: string): void {
     localStorage.setItem(key, data);
   }
+
+  static removeItem(key: StorageItems): void {
+    localStorage.removeItem(key);
+  }
 }
