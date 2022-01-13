@@ -38,6 +38,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
+  margin: 0 1rem;
   align-content: space-between;
   justify-content: space-around;
 
