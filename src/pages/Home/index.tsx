@@ -6,6 +6,7 @@ import { Header } from './header';
 import { Storage } from '../../libs/storage';
 import { IBook } from '../../models/Books';
 import { Grid } from './Grid';
+import { Pagination } from './Pagination';
 
 /**
  *
@@ -41,18 +42,23 @@ export function HomePage() {
   const navigate = useNavigate();
 
   const [books, setBooks] = useState<IBook[]>([]);
+  const [page, setPage] = useState<number>(1);
 
   const validateLoginAndGetBooks = async () => {
     const hasValidToken = await updateAuthAndRefreshToken();
     if (!hasValidToken) navigate('/');
 
     const sdk = new SDK();
-    const api = await sdk.getBooks(Storage.getItem('authorization'), 1);
+    const api = await sdk.getBooks(Storage.getItem('authorization'), page);
     setBooks(api.data);
   };
 
   useEffect(() => {
     validateLoginAndGetBooks();
+
+    setInterval(() => {
+      validateLoginAndGetBooks();
+    }, 20 * 60 * 1000);
   }, []);
 
   return (
@@ -60,6 +66,7 @@ export function HomePage() {
     <Container>
       <Header />
       <Grid books={books} />
+      <Pagination page={page} max={10} setPage={setPage} />
     </Container>
   );
 }
